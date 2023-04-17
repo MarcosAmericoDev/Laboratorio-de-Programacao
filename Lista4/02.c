@@ -1,9 +1,11 @@
+/* Escreva um programa que troque o valor de dois números utilizando ponteiros. */
+
 #include <stdio.h>
 
 void imprimirPonteiros(int *p1, int *p2);
 int main(void) {
 
-    /* Escreva um programa que troque o valor de dois números utilizando ponteiros. */
+
 
     // Entrada
 

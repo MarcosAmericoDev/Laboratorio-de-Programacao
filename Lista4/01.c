@@ -1,8 +1,9 @@
+/* Escreva um programa que adicione dois números usando ponteiros. Além do valor da soma, 
+imprima também o endereço de memória onde o valor resultante dessa soma está armazenado. */ 
+
 #include <stdio.h>
 
 int main(void) {
-    /* Escreva um programa que adicione dois números usando ponteiros. Além do valor da soma, imprima
-    também o endereço de memória onde o valor resultante dessa soma está armazenado. */ 
     
     // Entrada
     int n1, n2, soma;
