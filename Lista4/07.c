@@ -11,7 +11,7 @@ int main(void) {
 
     puts("Digite as suas strings: ");
     fgets(s1, TAM, stdin);
-    *(pS1 + strlen(pS1) - 1) = '\0';
+    *(pS1 + strlen(pS1) - 1) = '\0'; // Acho que essa linha é POG
     fflush(stdin);
     fgets(s2, TAM, stdin);
 
