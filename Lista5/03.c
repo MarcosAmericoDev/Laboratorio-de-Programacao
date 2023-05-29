@@ -10,7 +10,7 @@
 
 void preenchimentoDeArray(int *, int, int, int);
 void mostrarVetor(int *, int);
-void menorValor(int *, int);
+void MaiorMenor(int *, int);
 
 int main(int argc, char **argv)
 {
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     preenchimentoDeArray(pArray, MAX, SFT, quantElem);
     mostrarVetor(pArray, quantElem);
     printf("\n");
-    menorValor(pArray, quantElem);
+    MaiorMenor(pArray, quantElem);
 
     return 0;
 }
@@ -49,18 +49,22 @@ void mostrarVetor(int *p, int tamanhoDoArray)
     for (int i = 0; i < tamanhoDoArray; i++) printf("%4d ", *(p+i));
 }
 
-void menorValor(int *p, int tamanhoDoArray) 
+void MaiorMenor(int *p, int tamanhoDoArray) 
 {  
-    int enderecoMenorValor = p;
+    int vetorMaiorMenor[2];
+    int *pVet = vetorMaiorMenor;
     int menorValor = *p;
+    int maiorValor = *p;
+
     for (int i = 0; i < tamanhoDoArray; i++)
     {
-        if (*(p+i) < menorValor)
-        {
-            menorValor = *(p+i);
-            enderecoMenorValor = p+i;
-        }
+        if (*(p+i) < menorValor) menorValor = *(p+i);
+        if (*(p+i) > maiorValor) maiorValor = *(p+i);
+        
     }
 
-    printf("o menor valor é %d, e seu endereço é %p", menorValor, enderecoMenorValor);
+    *pVet = menorValor;
+    *(pVet+1) = maiorValor;
+
+    printf("Maior valor: %d \nMenorValor: %d \n", maiorValor, menorValor);
 }
