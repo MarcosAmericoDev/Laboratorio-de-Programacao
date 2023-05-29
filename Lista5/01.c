@@ -20,8 +20,6 @@ int main(int argc, char **argv)
     int resultado = operacao(primValor, segValor, cod);
 
     printf("O seu resultado é: %d", resultado);
-
-    return 0;
 }
 
 int operacao(int v1, int v2, int codigo)
