@@ -24,24 +24,24 @@ int main(int argc, char **argv)
         printf("\nUse: ./%s [qLin] [qCol]", *argv);
     }
 
-    struct Matriz matriz;
-    struct Matriz *pMatriz = &matriz;
+    struct Matriz imagemPrincipal;
+    struct Matriz *pImagemPrincipal = &imagemPrincipal;
     
     int qLin = atoi(*(argv+1));
     int qCol = atoi(*(argv+2));
     
-    pMatriz->quantidade_coluna = qCol;
-    pMatriz->quantidade_linha = qLin;
+    pImagemPrincipal->quantidade_coluna = qCol;
+    pImagemPrincipal->quantidade_linha = qLin;
 
-    pMatriz->linhas = (int **) malloc(qLin * sizeof(int));
+    pImagemPrincipal->linhas = (int **) malloc(qLin * sizeof(int));
 
-    for (int i = 0; i < pMatriz->quantidade_linha; i++)
+    for (int i = 0; i < pImagemPrincipal->quantidade_linha; i++)
     {
-        pMatriz->linhas[i] = malloc(qCol * sizeof(int));
+        pImagemPrincipal->linhas[i] = malloc(qCol * sizeof(int));
     }
 
-    gerarMatriz(pMatriz);
-    imprimirMatriz(pMatriz);
+    gerarMatriz(pImagemPrincipal);
+    imprimirMatriz(pImagemPrincipal);
 
     return 0;
 }
@@ -54,7 +54,7 @@ void gerarMatriz(struct Matriz *m)
     {
         for (int j = 0; j < m->quantidade_coluna; j++)
         {
-            *(*(m->linhas+i)+j) = rand()%MAX + SFT;
+            *(m->linhas[i]+j) = rand()%MAX + SFT;
         }
     }
 }
@@ -65,7 +65,7 @@ void imprimirMatriz(struct Matriz *m)
     {
         for (int j = 0; j < m->quantidade_coluna; j++)
         {
-            printf("%4d ", m->linhas[i][j]);
+            printf("%4d ", *(m->linhas[i]+ j));
         }
         printf("\n");
     }
