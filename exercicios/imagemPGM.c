@@ -5,6 +5,7 @@
 
 #define MAX 255
 #define SFT 0
+#define NUMREC 5
 
 struct Matriz
 {
@@ -13,12 +14,15 @@ struct Matriz
     int **linhas;
 
 };
+
+void alocarMatrizPrincipal(struct Matriz *);
 void gerarMatriz(struct Matriz);
 void imprimirMatriz(struct Matriz);
 
 int main(int argc, char **argv)
 {   
-    
+    srand(time(NULL));
+
     if (argc != 3)
     {
         printf("\nUse: ./%s [qLin] [qCol]", *argv);
@@ -35,27 +39,23 @@ int main(int argc, char **argv)
     pImagemPrincipal->quantidade_coluna = qCol;
     pImagemPrincipal->quantidade_linha = qLin;
 
-    pImagemPrincipal->linhas = (int **) malloc(pImagemPrincipal->quantidade_linha * sizeof(int));
-
-    for (int i = 0; i < pImagemPrincipal->quantidade_linha; i++)
-    {
-        pImagemPrincipal->linhas[i] = malloc(pImagemPrincipal->quantidade_coluna * sizeof(int));
-    }
-
+    alocarMatrizPrincipal(pImagemPrincipal);
     gerarMatriz(imagemPrincipal);
     imprimirMatriz(imagemPrincipal);
 
     // Recortes
 
-    struct Matriz Recortes[5];
+    struct Matriz Recortes[NUMREC];
 
-    for (int i = 0; i < 5; i++)
+    int tamanhoRecorte = 3;
+
+    for (int i = 0; i < NUMREC; i++)
     {
-        Recortes[i].quantidade_coluna = 10;
-        Recortes[i].quantidade_linha = 10;
+        Recortes[i].quantidade_coluna = tamanhoRecorte;
+        Recortes[i].quantidade_linha = tamanhoRecorte;
     }
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < NUMREC; i++)
     {
         Recortes[i].linhas = (int **) malloc(Recortes[i].quantidade_linha * sizeof(int));
 
@@ -66,10 +66,26 @@ int main(int argc, char **argv)
         
     }
 
+    int xCentro;
+    int yCentro;
+    for (int i = 0; i < NUMREC; i++)
+    {
+        xCentro = (tamanhoRecorte/2) + rand() % ((pImagemPrincipal->quantidade_coluna)-(tamanhoRecorte/2));
+        yCentro = (tamanhoRecorte/2) + rand() % ((pImagemPrincipal->quantidade_linha)-(tamanhoRecorte/2));
+
+        for (int j = 0; j < Recortes[i].quantidade_linha; j++)
+        {
+            for (int k = 0; k < Recortes[i].quantidade_coluna; k++)
+            {
+                Recortes[i].linhas[j][k] = (pImagemPrincipal->linhas[yCentro-1+j][xCentro-1+k]);
+            }
+        }
+    }
+    
+
     for (int i = 0; i < 5; i++)
     {
         printf("\n");
-        gerarMatriz(Recortes[i]);
         imprimirMatriz(Recortes[i]);
         printf("\n");
     }
@@ -77,6 +93,16 @@ int main(int argc, char **argv)
     
 
     return 0;
+}
+
+void alocarMatrizPrincipal(struct Matriz *m)
+{
+    m->linhas = (int **) malloc(m->quantidade_linha * sizeof(int));
+
+    for (int i = 0; i < m->quantidade_linha; i++)
+    {
+        m->linhas[i] = malloc(m->quantidade_coluna * sizeof(int));
+    }
 }
 
 void gerarMatriz(struct Matriz m) 
