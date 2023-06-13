@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < NUMREC; i++)
     {
-        Recortes[i].linhas = (int **) malloc(Recortes[i].quantidade_linha * sizeof(int));
+        Recortes[i].linhas = (int **) malloc(Recortes[i].quantidade_linha * sizeof(int *));
 
         for (int j = 0; j < Recortes[i].quantidade_linha; j++)
         {
@@ -66,24 +66,24 @@ int main(int argc, char **argv)
         
     }
 
-    int xCentro;
-    int yCentro;
+    int xPartida;
+    int yPartida;
     for (int i = 0; i < NUMREC; i++)
     {
-        xCentro = (tamanhoRecorte/2) + rand() % ((pImagemPrincipal->quantidade_coluna)-(tamanhoRecorte/2));
-        yCentro = (tamanhoRecorte/2) + rand() % ((pImagemPrincipal->quantidade_linha)-(tamanhoRecorte/2));
+        xPartida = rand() % (pImagemPrincipal->quantidade_coluna - tamanhoRecorte + 1);
+        yPartida = rand() % (pImagemPrincipal->quantidade_linha - tamanhoRecorte + 1);
 
         for (int j = 0; j < Recortes[i].quantidade_linha; j++)
         {
             for (int k = 0; k < Recortes[i].quantidade_coluna; k++)
             {
-                Recortes[i].linhas[j][k] = (pImagemPrincipal->linhas[yCentro-1+j][xCentro-1+k]);
+                Recortes[i].linhas[j][k] = (pImagemPrincipal->linhas[yPartida+j][xPartida+k]);
             }
         }
     }
     
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < NUMREC; i++)
     {
         printf("\n");
         imprimirMatriz(Recortes[i]);
