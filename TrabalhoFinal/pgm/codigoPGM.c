@@ -70,6 +70,8 @@ void readPGMImage(struct pgm *pio, char *filename) {
     fscanf(fp, "%d", &pio->maxvalue);
     fseek(fp, 1, SEEK_CUR);
 
+    // Cria um ponteiro para ponteiro para o salvamento de dados da matriz
+
     pio->pData = (unsigned char **)malloc(pio->linhas * sizeof(unsigned char *));
     for (int i = 0; i < pio->linhas; i++) {
         pio->pData[i] = (unsigned char *)malloc(pio->colunas * sizeof(unsigned char));
@@ -133,6 +135,7 @@ void viewPGMImage(struct pgm *pio) {
 
 void cuttingPGMImage(struct pgm *pio, char *filename) {
 
+    // Cria 100 recortes com base na estrutura pgm
     struct pgm Recortes[QUANTREC];
 
     for (int i = 0; i < QUANTREC; i++) {
@@ -140,6 +143,7 @@ void cuttingPGMImage(struct pgm *pio, char *filename) {
         Recortes[i].linhas = TAMREC;
     }
 
+    // Faz a alocação de cada um desses recortes na memória
     for (int i = 0; i < QUANTREC; i++) {
         Recortes[i].pData = (unsigned char **)malloc(Recortes[i].linhas * sizeof(unsigned char *));
 
@@ -148,6 +152,8 @@ void cuttingPGMImage(struct pgm *pio, char *filename) {
         }
     }
 
+    // Ele fará o recorte da segunte maneira, escolherá um ponto de partida inicial, indo de 0 até o tamanho da imagem - o tamanho do recorte, extendendo para
+    // o x e o y para direita e para baixo, dessa maneira, ele nunca será afetado pelas bordas.
     int xPartida;
     int yPartida;
     for (int i = 0; i < QUANTREC; i++) {
@@ -161,17 +167,21 @@ void cuttingPGMImage(struct pgm *pio, char *filename) {
         }
         applyFilter(&Recortes[i]);
 
+        // Com essa linha de código, ele criará os 100 recortes na pasta ./images, escrevendo o que há no Recorte respectivo do laço em cada arquivo respectivo
         char outputFileName[100];
-        snprintf(outputFileName, sizeof(outputFileName), "./images/recorte%d.pgm", i);
+        sprintf(outputFileName, sizeof(outputFileName), "./images/recorte%d.pgm", i+1);
         writePGMImage(&Recortes[i], outputFileName);
     }
 }
 
 void applyFilter(struct pgm *pio) {
+
+    // estrutura temporária para os calculos
     struct pgm temp;
     temp.colunas = pio->colunas;
     temp.linhas = pio->linhas;
 
+    // alocação do dados na estrutura temporária
     temp.pData = (unsigned char **)malloc(temp.linhas * sizeof(unsigned char *));
     for (int i = 0; i < temp.linhas; i++) {
         temp.pData[i] = malloc(temp.colunas * sizeof(unsigned char));
@@ -181,7 +191,8 @@ void applyFilter(struct pgm *pio) {
         for (int j = 0; j < pio->colunas; j++) {
             int soma = 0;
             int count = 0;
-
+            
+            // calculo do filtro de media
             for (int m = -1; m <= 1; m++) {
                 for (int n = -1; n <= 1; n++) {
                     int lin = i + m;
@@ -193,17 +204,19 @@ void applyFilter(struct pgm *pio) {
                     }
                 }
             }
-
+        
             temp.pData[i][j] = (unsigned char)(soma / count);
         }
     }
-
+    
+    // inserindo o que foi escrito na estrutura temporaria na matriz original
     for (int i = 0; i < pio->linhas; i++) {
         for (int j = 0; j < pio->colunas; j++) {
             pio->pData[i][j] = temp.pData[i][j];
         }
     }
 
+    // liberando a memória
     for (int i = 0; i < temp.linhas; i++) {
         free(temp.pData[i]);
     }
