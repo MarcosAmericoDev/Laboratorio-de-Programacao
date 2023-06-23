@@ -169,7 +169,7 @@ void cuttingPGMImage(struct pgm *pio, char *filename) {
 
         // Com essa linha de código, ele criará os 100 recortes na pasta ./images, escrevendo o que há no Recorte respectivo do laço em cada arquivo respectivo
         char outputFileName[100];
-        sprintf(outputFileName, sizeof(outputFileName), "./images/recorte%d.pgm", i+1);
+        snprintf(outputFileName, sizeof(outputFileName), "./images/recorte%d.pgm", i+1);
         writePGMImage(&Recortes[i], outputFileName);
     }
 }
